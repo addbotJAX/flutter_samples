@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import './planet.dart';
+import './second_body.dart';
 
 
 
@@ -25,6 +26,9 @@ class _MainBodyState extends State<MainBody> {
   }
 }
 
+
+// The body holder for the AppBar and Body
+
 class Body extends StatelessWidget{
   @override
   Widget build(BuildContext context){
@@ -34,11 +38,12 @@ class Body extends StatelessWidget{
       children: <Widget>[
         new AppBar(),
         new Container(
-          child: new Center (
-            child: Home(),
-          ),
-          width: screenSize.width,
+          width: screenSize.width ,
           height: screenSize.height - (barHeight + 60),
+          child: new Center (
+            child: new Home()
+          ),
+        
           )
       ]
     );
@@ -46,30 +51,37 @@ class Body extends StatelessWidget{
 }
 
 
+// The body that displays all the planets
 
 class Home extends StatelessWidget {
-  static int thisvars;
 
-  
+
   @override
   Widget build(BuildContext context) {
-    return new ListView(children: <Widget>[
-      Box('Earth',1),
-      Box('Mars',3),
-      Box('Venus',11),
-      Box('Saturn',8),
-      Box('Uranus',10),
-      Box('Jupiter',2),
-      Box('Mercury',4),
-      Box('Moon',5),
-      Box('Neptune',6),
-      Box('Sun',9),
-      Box('Pluto',7),
+
+    return new ListView(
+      children: <Widget>[
      
-     ]
+         Box(1),
+         Box(2),
+         Box(3),
+         Box(4),
+         Box(5),
+         Box(6),
+         Box(7),
+         Box(8),
+         Box(9),
+         Box(10),
+         Box(11),
+
+       ]
     );
+ 
+    
   }
 }
+
+// Custom AppBar
 
 class AppBar extends StatelessWidget {
   TextStyle generalFont(double size) {
@@ -107,17 +119,20 @@ class AppBar extends StatelessWidget {
   }
 }
 
+
+// The container box
+
 class Box extends StatelessWidget {
 
-  final String planetName;
-
   final int passedPlanet;
+
   static int thisvars;
   
-  Box(this.planetName,this.passedPlanet);
+  Box(this.passedPlanet);
 
 
   final Planets planets = new Planets(thisvars);
+
 
   TextStyle generalFont(double size) {
     return new TextStyle(
@@ -141,10 +156,11 @@ class Box extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
 
 
-    return new Padding(
+    return new Container(
+      child: new Padding(
         padding: EdgeInsets.only(bottom: 20.0),
         child: new Center(
-            child: new Stack(children: <Widget>[
+          child: new Stack(children: <Widget>[
           new Row(
             children: <Widget>[
             new Padding(
@@ -155,9 +171,9 @@ class Box extends StatelessWidget {
                   decoration: new BoxDecoration(
                       color: Colors.blue.shade900.withRed(100).withAlpha(140),
                       borderRadius: BorderRadius.all(Radius.circular(16.0))),
-                  child: new Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
+                      child: new Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
                         new Padding(
                             padding: EdgeInsets.only(top: 10.0, left: 78.0),
                             child: new Container(
@@ -166,15 +182,16 @@ class Box extends StatelessWidget {
                               decoration: new BoxDecoration(
                                   color: null,
                                   borderRadius:
-                                      BorderRadius.all(Radius.circular(16.0))),
+                                      BorderRadius.all(Radius.circular(16.0))
+                              ),
                               child: new Padding(
-                                  padding: EdgeInsets.only(left: 10.0),
-                                  child: new Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: new Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                       children: <Widget>[
                                         new Text(
-                                          planetName,
+                                          planets.planetName(passedPlanet),
                                           style: generalFont(30.0),
                                         ),
                                         new IconButton(
@@ -182,7 +199,8 @@ class Box extends StatelessWidget {
                                             Icons.more_vert,
                                             color: Colors.white,
                                           ),
-                                          onPressed: () => null,
+                                          // Checks the button pressed and return the int
+                                          onPressed: () => debugPrint(passedPlanet.toString()),
                                         )
                                       ]
                                   )
@@ -212,45 +230,74 @@ class Box extends StatelessWidget {
                             )
                         ),
 
-                        // new Padding(
-                        //   padding: EdgeInsets.only(top:10.0, left: 78.0),
-                        //   child: new Row(
-                        //     children: <Widget>[
-                        //       new Container(
-                        //        height: 25.0,
-                        //        width: 90.0,
-                        //        decoration: new BoxDecoration(
-                        //        color:Colors.red,
-                        //        borderRadius: BorderRadius.all(Radius.circular(16.0))
-                        //        ),
-                        //       ),
+                        new Padding(
+                          padding: EdgeInsets.only(top:10.0, left: 78.0),
+                          child: new Row(
+                            children: <Widget>[
+                              new Container(
+                               height: 25.0,
+                               width: 90.0,
+                               decoration: new BoxDecoration(
+                                 borderRadius: BorderRadius.all(Radius.circular(16.0)),
+                                 ),
+                                 child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                   new Icon(
+                                    Icons.location_on,
+                                    size: 15.0,
+                                    color: Colors.grey,
+                                   ),
+                                   new Text(
+                                    planets.planetDistance(passedPlanet),
+                                    style: subFont(12.0),
+                                  )
+                                
+                                 ]
+                               ),
+                              ),
 
-                        //       new Padding(
-                        //         padding: EdgeInsets.only(left: 10.0),
-                        //         child: new Container(
-                        //          height: 25.0,
-                        //          width: 100.0,
-                        //          decoration: new BoxDecoration(
-                        //          color:Colors.red,
-                        //          borderRadius: BorderRadius.all(Radius.circular(16.0))
-                        //          ),
-                        //        ),
-                        //       )
-
-                        //     ]
-                        //   )
-                        // )
+                              new Padding(
+                                padding: EdgeInsets.only(left: 10.0),
+                                child: new Container(
+                                 height: 25.0,
+                                 width: 90.0,
+                                 decoration: new BoxDecoration(
+                                   color: null,
+                                 borderRadius: BorderRadius.all(Radius.circular(16.0))),
+                                 child: new Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: <Widget>[
+                                   new Icon(
+                                    Icons.file_download,
+                                    size: 15.0,
+                                    color: Colors.grey,
+                                   ),
+                                   //for debugging (272 - 276)
+                                  //  new Text(null,
+                                  //  //  planets.planetGravity(passedPlanet),
+                                  //   style: subFont(12.0),
+                                  // )
+                                
+                                 ]
+                               ),
+                               ),
+                              )
+                          
+                            ]
+                          )
+                        )
                       ]
                     ),
                 )
             ),
           ]
         ),
-          //holder for the image
+          //holder for the image - for debugging (291-299)
           new Padding(
               padding: EdgeInsets.only(left: ((screenSize.width-300)/2 - 33.0), top: 25.0),
               child: new Image.asset(
-                planets.planetimg(passedPlanet),
+                planets.planetimgs(passedPlanet).toString(),
                 width: 100.0,
                 height: 100.0,
               )
@@ -258,6 +305,9 @@ class Box extends StatelessWidget {
         ]
       )
     )
-  );
+  )
+    );
   }
 }
+
+
